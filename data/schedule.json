@@ -1,0 +1,121 @@
+{
+  "groupStage": [
+    {
+      "group": "A",
+      "matches": [
+        {
+          "date": "2026-06-11T18:00:00Z",
+          "venue": "Mexico City",
+          "homeTeam": "Mexico",
+          "awayTeam": "Canada",
+          "homeScore": null,
+          "awayScore": null
+        },
+        {
+          "date": "2026-06-12T01:00:00Z",
+          "venue": "Los Angeles",
+          "homeTeam": "USA",
+          "awayTeam": "Winner OFC Playoff",
+          "homeScore": null,
+          "awayScore": null
+        }
+      ]
+    },
+    {
+      "group": "B",
+      "matches": [
+        {
+          "date": "2026-06-12T18:00:00Z",
+          "venue": "Toronto",
+          "homeTeam": "Spain",
+          "awayTeam": "Japan",
+          "homeScore": null,
+          "awayScore": null
+        },
+        {
+          "date": "2026-06-12T21:00:00Z",
+          "venue": "Vancouver",
+          "homeTeam": "Germany",
+          "awayTeam": "Morocco",
+          "homeScore": null,
+          "awayScore": null
+        }
+      ]
+    }
+  ],
+  "knockoutStage": [
+    {
+      "round": "Round of 32",
+      "matches": [
+        {
+          "date": "2026-06-28T18:00:00Z",
+          "venue": "Atlanta",
+          "homeTeam": "1A",
+          "awayTeam": "3C",
+          "homeScore": null,
+          "awayScore": null
+        },
+        {
+          "date": "2026-06-29T01:00:00Z",
+          "venue": "Seattle",
+          "homeTeam": "2B",
+          "awayTeam": "2F",
+          "homeScore": null,
+          "awayScore": null
+        }
+      ]
+    },
+    {
+      "round": "Round of 16",
+      "matches": [
+        {
+          "date": "2026-07-03T18:00:00Z",
+          "venue": "Houston",
+          "homeTeam": "Winner M49",
+          "awayTeam": "Winner M50",
+          "homeScore": null,
+          "awayScore": null
+        }
+      ]
+    },
+    {
+      "round": "Quarterfinals",
+      "matches": [
+        {
+          "date": "2026-07-07T21:00:00Z",
+          "venue": "Kansas City",
+          "homeTeam": "Winner R16-1",
+          "awayTeam": "Winner R16-2",
+          "homeScore": null,
+          "awayScore": null
+        }
+      ]
+    },
+    {
+      "round": "Semifinals",
+      "matches": [
+        {
+          "date": "2026-07-11T19:00:00Z",
+          "venue": "Dallas",
+          "homeTeam": "Winner QF-1",
+          "awayTeam": "Winner QF-2",
+          "homeScore": null,
+          "awayScore": null
+        }
+      ]
+    },
+    {
+      "round": "Final",
+      "matches": [
+        {
+          "date": "2026-07-19T19:00:00Z",
+          "venue": "New York / New Jersey",
+          "homeTeam": "Winner SF-1",
+          "awayTeam": "Winner SF-2",
+          "homeScore": null,
+          "awayScore": null
+        }
+      ]
+    }
+  ]
+}
