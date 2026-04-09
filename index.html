@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>2026 World Cup Schedule</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div>
+        <h1 id="page-title">2026 FIFA World Cup Schedule</h1>
+        <p id="page-subtitle">Group stage fixtures and knockout bracket</p>
+      </div>
+
+      <div class="header-actions">
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-live="polite">Dark mode</button>
+        <label class="language-picker" for="language-select">
+          <span id="language-label">Language</span>
+          <select id="language-select" aria-label="Language selector">
+            <option value="en">English</option>
+            <option value="zh">中文</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="es">Español</option>
+          </select>
+        </label>
+      </div>
+    </header>
+
+    <main>
+      <section class="panel">
+        <h2 id="group-stage-title">Group Stage</h2>
+        <div id="group-stage" class="group-list" aria-live="polite"></div>
+      </section>
+
+      <section class="panel">
+        <div class="knockout-title-row">
+          <h2 id="knockout-title">Knockout Stage</h2>
+          <span id="drag-tip" class="drag-tip">Drag left/right to explore the full bracket</span>
+        </div>
+        <div id="knockout-scroll" class="knockout-scroll" aria-label="Knockout bracket">
+          <div id="knockout-stage" class="knockout-bracket"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <small id="last-updated-text">Last updated: <span id="last-updated-value">--</span></small>
+    </footer>
+
+    <template id="match-template">
+      <article class="match-card">
+        <div class="match-meta">
+          <time class="match-date"></time>
+          <span class="match-venue"></span>
+        </div>
+        <div class="match-team-row">
+          <span class="team team-home"></span>
+          <span class="score score-home"></span>
+        </div>
+        <div class="match-team-row">
+          <span class="team team-away"></span>
+          <span class="score score-away"></span>
+        </div>
+      </article>
+    </template>
+
+    <script src="script.js" type="module"></script>
+  </body>
+</html>
