@@ -21,23 +21,10 @@ python3 -m http.server 8000
 
 Then open `http://localhost:8000`.
 
-## Deployment
+## GitHub Pages deployment
 
-This repository is configured to auto-deploy through Netlify (via GitHub Actions build hook trigger).
+This repo includes `.github/workflows/deploy.yml`:
+- Triggers on pushes to `main`
+- Deploys the repository root as a static artifact
 
-To keep schedule updated, edit and commit `data/schedule.json`, then push to `main`.
-
-## Netlify automatic redeploy on GitHub updates
-
-This repository now includes `.github/workflows/netlify-redeploy.yml`.
-
-It triggers a Netlify redeploy whenever `main` is updated (or when manually dispatched).
-
-### Setup
-
-1. In Netlify, open your site settings and create a **Build hook**.
-2. Copy the build hook URL.
-3. In GitHub, open this repository's **Settings -> Secrets and variables -> Actions**.
-4. Add a repository secret named `NETLIFY_BUILD_HOOK_URL` with the copied URL.
-
-After this setup, every push to `main` will trigger Netlify redeploy automatically.
+To keep schedule updated, only edit and commit `data/schedule.json`. GitHub Actions will redeploy automatically.

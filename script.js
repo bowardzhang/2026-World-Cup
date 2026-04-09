@@ -9,17 +9,7 @@ const translations = {
     dragTip: 'Drag left/right to explore the full bracket',
     groupLabel: 'Group',
     scorePending: '-',
-    datePending: 'TBD',
-    roundOf32: 'Round of 32',
-    roundOf16: 'Round of 16',
-    quarterfinals: 'Quarterfinals',
-    semifinals: 'Semifinals',
-    thirdPlace: 'Third Place',
-    final: 'Final',
-    darkMode: 'Dark mode',
-    lightMode: 'Light mode',
-    lastUpdated: 'Last updated',
-    unknown: 'Unknown'
+    datePending: 'TBD'
   },
   zh: {
     htmlLang: 'zh-CN',
@@ -31,17 +21,7 @@ const translations = {
     dragTip: '左右拖动查看完整淘汰赛对阵图',
     groupLabel: '小组',
     scorePending: '-',
-    datePending: '待定',
-    roundOf32: '32强',
-    roundOf16: '16强',
-    quarterfinals: '四分之一决赛',
-    semifinals: '半决赛',
-    thirdPlace: '三四名决赛',
-    final: '决赛',
-    darkMode: '深色模式',
-    lightMode: '浅色模式',
-    lastUpdated: '最近更新时间',
-    unknown: '未知'
+    datePending: '待定'
   },
   fr: {
     htmlLang: 'fr',
@@ -53,17 +33,7 @@ const translations = {
     dragTip: 'Faites glisser à gauche/droite pour voir tout le tableau',
     groupLabel: 'Groupe',
     scorePending: '-',
-    datePending: 'À définir',
-    roundOf32: 'Seizièmes de finale',
-    roundOf16: 'Huitièmes de finale',
-    quarterfinals: 'Quarts de finale',
-    semifinals: 'Demi-finales',
-    thirdPlace: 'Match pour la 3e place',
-    final: 'Finale',
-    darkMode: 'Mode sombre',
-    lightMode: 'Mode clair',
-    lastUpdated: 'Dernière mise à jour',
-    unknown: 'Inconnue'
+    datePending: 'À définir'
   },
   de: {
     htmlLang: 'de',
@@ -75,17 +45,7 @@ const translations = {
     dragTip: 'Zum Erkunden des Turnierbaums nach links/rechts ziehen',
     groupLabel: 'Gruppe',
     scorePending: '-',
-    datePending: 'Offen',
-    roundOf32: 'Sechzehntelfinale',
-    roundOf16: 'Achtelfinale',
-    quarterfinals: 'Viertelfinale',
-    semifinals: 'Halbfinale',
-    thirdPlace: 'Spiel um Platz 3',
-    final: 'Finale',
-    darkMode: 'Dunkelmodus',
-    lightMode: 'Hellmodus',
-    lastUpdated: 'Zuletzt aktualisiert',
-    unknown: 'Unbekannt'
+    datePending: 'Offen'
   },
   es: {
     htmlLang: 'es',
@@ -97,32 +57,20 @@ const translations = {
     dragTip: 'Arrastra izquierda/derecha para ver el cuadro completo',
     groupLabel: 'Grupo',
     scorePending: '-',
-    datePending: 'Por definir',
-    roundOf32: 'Dieciseisavos',
-    roundOf16: 'Octavos',
-    quarterfinals: 'Cuartos de final',
-    semifinals: 'Semifinales',
-    thirdPlace: 'Tercer puesto',
-    final: 'Final',
-    darkMode: 'Modo oscuro',
-    lightMode: 'Modo claro',
-    lastUpdated: 'Última actualización',
-    unknown: 'Desconocida'
+    datePending: 'Por definir'
   }
 };
 
 let scheduleData;
 let currentLanguage = 'en';
-let scheduleLastUpdated = null;
 
 const languageSelect = document.getElementById('language-select');
 const groupStageContainer = document.getElementById('group-stage');
 const knockoutStageContainer = document.getElementById('knockout-stage');
 const matchTemplate = document.getElementById('match-template');
-const themeToggle = document.getElementById('theme-toggle');
 
 function text(key) {
-  return translations[currentLanguage][key] || translations.en[key] || key;
+  return translations[currentLanguage][key] || translations.en[key] || '';
 }
 
 function formatDate(isoLike) {
@@ -130,19 +78,6 @@ function formatDate(isoLike) {
   const date = new Date(isoLike);
   if (Number.isNaN(date.getTime())) return isoLike;
   return new Intl.DateTimeFormat(translations[currentLanguage].htmlLang, {
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit'
-  }).format(date);
-}
-
-function formatLastUpdated(value) {
-  if (!value) return text('unknown');
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return value;
-  return new Intl.DateTimeFormat(translations[currentLanguage].htmlLang, {
-    year: 'numeric',
     month: 'short',
     day: 'numeric',
     hour: '2-digit',
@@ -183,13 +118,12 @@ function renderGroupStage() {
 
 function renderKnockoutStage() {
   knockoutStageContainer.innerHTML = '';
-  scheduleData.knockoutStage.forEach((round, index) => {
+  scheduleData.knockoutStage.forEach((round) => {
     const column = document.createElement('section');
     column.className = 'round';
-    column.dataset.roundIndex = String(index);
 
     const title = document.createElement('h3');
-    title.textContent = text(round.roundKey);
+    title.textContent = round.round;
 
     column.append(title);
     round.matches.forEach((match) => {
@@ -200,15 +134,6 @@ function renderKnockoutStage() {
   });
 }
 
-function setTheme(theme) {
-  document.documentElement.dataset.theme = theme;
-  localStorage.setItem('theme', theme);
-}
-
-function getActiveTheme() {
-  return document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
-}
-
 function applyTranslations() {
   document.documentElement.lang = translations[currentLanguage].htmlLang;
   document.getElementById('page-title').textContent = text('pageTitle');
@@ -217,19 +142,6 @@ function applyTranslations() {
   document.getElementById('group-stage-title').textContent = text('groupStageTitle');
   document.getElementById('knockout-title').textContent = text('knockoutTitle');
   document.getElementById('drag-tip').textContent = text('dragTip');
-  themeToggle.textContent = getActiveTheme() === 'dark' ? text('lightMode') : text('darkMode');
-  document.getElementById('last-updated-text').innerHTML = `${text('lastUpdated')}: <span id="last-updated-value">${formatLastUpdated(scheduleLastUpdated)}</span>`;
-}
-
-function setupThemeToggle() {
-  const stored = localStorage.getItem('theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  setTheme(stored || (prefersDark ? 'dark' : 'light'));
-
-  themeToggle.addEventListener('click', () => {
-    setTheme(getActiveTheme() === 'dark' ? 'light' : 'dark');
-    applyTranslations();
-  });
 }
 
 function setupHorizontalDrag() {
@@ -273,7 +185,6 @@ async function loadSchedule() {
   if (!response.ok) {
     throw new Error(`Failed to load schedule JSON: ${response.status}`);
   }
-  scheduleLastUpdated = response.headers.get('last-modified') || new Date().toISOString();
   scheduleData = await response.json();
 }
 
@@ -284,7 +195,6 @@ function renderPage() {
 }
 
 async function init() {
-  setupThemeToggle();
   await loadSchedule();
   setupHorizontalDrag();
   renderPage();
