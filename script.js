@@ -1,39 +1,48 @@
-const TEAM_FLAGS = {
-  'Mexico': '🇲🇽', 'Canada': '🇨🇦', 'USA': '🇺🇸',
-  'Argentina': '🇦🇷', 'Brazil': '🇧🇷', 'Uruguay': '🇺🇾',
-  'Colombia': '🇨🇴', 'Ecuador': '🇪🇨', 'Chile': '🇨🇱',
-  'Peru': '🇵🇪', 'Venezuela': '🇻🇪', 'Bolivia': '🇧🇴',
-  'Paraguay': '🇵🇾',
-  'Germany': '🇩🇪', 'Spain': '🇪🇸', 'France': '🇫🇷',
-  'England': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'Portugal': '🇵🇹', 'Netherlands': '🇳🇱',
-  'Belgium': '🇧🇪', 'Italy': '🇮🇹', 'Croatia': '🇭🇷',
-  'Switzerland': '🇨🇭', 'Austria': '🇦🇹', 'Denmark': '🇩🇰',
-  'Sweden': '🇸🇪', 'Norway': '🇳🇴', 'Poland': '🇵🇱',
-  'Serbia': '🇷🇸', 'Hungary': '🇭🇺', 'Romania': '🇷🇴',
-  'Turkey': '🇹🇷', 'Greece': '🇬🇷', 'Czech Republic': '🇨🇿',
-  'Slovakia': '🇸🇰', 'Albania': '🇦🇱', 'Scotland': '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
-  'Wales': '🏴󠁧󠁢󠁷󠁬󠁳󠁿', 'Ukraine': '🇺🇦', 'Slovenia': '🇸🇮',
-  'Kosovo': '🇽🇰', 'Georgia': '🇬🇪',
-  'Japan': '🇯🇵', 'South Korea': '🇰🇷', 'Korea Republic': '🇰🇷',
-  'Australia': '🇦🇺', 'Iran': '🇮🇷', 'Saudi Arabia': '🇸🇦',
-  'Jordan': '🇯🇴', 'Iraq': '🇮🇶', 'Uzbekistan': '🇺🇿',
-  'China': '🇨🇳', 'Indonesia': '🇮🇩', 'Oman': '🇴🇲',
-  'UAE': '🇦🇪', 'Bahrain': '🇧🇭', 'Qatar': '🇶🇦',
-  'Syria': '🇸🇾', 'Kuwait': '🇰🇼',
-  'Morocco': '🇲🇦', 'Senegal': '🇸🇳', 'Nigeria': '🇳🇬',
-  'Egypt': '🇪🇬', 'Cameroon': '🇨🇲', 'Ghana': '🇬🇭',
-  'Tunisia': '🇹🇳', 'Algeria': '🇩🇿', 'Mali': '🇲🇱',
-  'South Africa': '🇿🇦', 'Cape Verde': '🇨🇻',
-  "Côte d'Ivoire": '🇨🇮', 'Ivory Coast': '🇨🇮',
-  'Costa Rica': '🇨🇷', 'Panama': '🇵🇦', 'Honduras': '🇭🇳',
-  'Jamaica': '🇯🇲', 'El Salvador': '🇸🇻', 'Guatemala': '🇬🇹',
-  'Cuba': '🇨🇺', 'Trinidad and Tobago': '🇹🇹',
-  'New Zealand': '🇳🇿', 'Fiji': '🇫🇯',
+const TEAM_CODES = {
+  'Mexico': 'mx', 'Canada': 'ca', 'USA': 'us',
+  'Argentina': 'ar', 'Brazil': 'br', 'Uruguay': 'uy',
+  'Colombia': 'co', 'Ecuador': 'ec', 'Chile': 'cl',
+  'Peru': 'pe', 'Venezuela': 've', 'Bolivia': 'bo',
+  'Paraguay': 'py',
+  'Germany': 'de', 'Spain': 'es', 'France': 'fr',
+  'England': 'gb-eng', 'Portugal': 'pt', 'Netherlands': 'nl',
+  'Belgium': 'be', 'Italy': 'it', 'Croatia': 'hr',
+  'Switzerland': 'ch', 'Austria': 'at', 'Denmark': 'dk',
+  'Sweden': 'se', 'Norway': 'no', 'Poland': 'pl',
+  'Serbia': 'rs', 'Hungary': 'hu', 'Romania': 'ro',
+  'Turkey': 'tr', 'Greece': 'gr', 'Czech Republic': 'cz',
+  'Slovakia': 'sk', 'Albania': 'al', 'Scotland': 'gb-sct',
+  'Wales': 'gb-wls', 'Ukraine': 'ua', 'Slovenia': 'si',
+  'Kosovo': 'xk', 'Georgia': 'ge',
+  'Japan': 'jp', 'South Korea': 'kr', 'Korea Republic': 'kr',
+  'Australia': 'au', 'Iran': 'ir', 'Saudi Arabia': 'sa',
+  'Jordan': 'jo', 'Iraq': 'iq', 'Uzbekistan': 'uz',
+  'China': 'cn', 'Indonesia': 'id', 'Oman': 'om',
+  'UAE': 'ae', 'Bahrain': 'bh', 'Qatar': 'qa',
+  'Syria': 'sy', 'Kuwait': 'kw',
+  'Morocco': 'ma', 'Senegal': 'sn', 'Nigeria': 'ng',
+  'Egypt': 'eg', 'Cameroon': 'cm', 'Ghana': 'gh',
+  'Tunisia': 'tn', 'Algeria': 'dz', 'Mali': 'ml',
+  'South Africa': 'za', 'Cape Verde': 'cv',
+  "Côte d'Ivoire": 'ci', 'Ivory Coast': 'ci',
+  'Costa Rica': 'cr', 'Panama': 'pa', 'Honduras': 'hn',
+  'Jamaica': 'jm', 'El Salvador': 'sv', 'Guatemala': 'gt',
+  'Cuba': 'cu', 'Trinidad and Tobago': 'tt',
+  'New Zealand': 'nz', 'Fiji': 'fj',
 };
 
-function teamWithFlag(name) {
-  const flag = TEAM_FLAGS[name];
-  return flag ? `${flag} ${name}` : name;
+function setTeamName(el, name) {
+  el.textContent = '';
+  const code = TEAM_CODES[name];
+  if (code) {
+    const img = document.createElement('img');
+    img.src = `https://flagcdn.com/w20/${code}.png`;
+    img.srcset = `https://flagcdn.com/w40/${code}.png 2x`;
+    img.alt = name;
+    img.className = 'team-flag';
+    el.appendChild(img);
+  }
+  el.appendChild(document.createTextNode(code ? ` ${name}` : name));
 }
 
 const translations = {
@@ -140,8 +149,8 @@ function createMatchCard(match) {
   const card = matchTemplate.content.firstElementChild.cloneNode(true);
   card.querySelector('.match-date').textContent = formatDate(match.date);
   card.querySelector('.match-venue').textContent = match.venue || '';
-  card.querySelector('.team-home').textContent = teamWithFlag(match.homeTeam);
-  card.querySelector('.team-away').textContent = teamWithFlag(match.awayTeam);
+  setTeamName(card.querySelector('.team-home'), match.homeTeam);
+  setTeamName(card.querySelector('.team-away'), match.awayTeam);
   card.querySelector('.score-home').textContent = match.homeScore ?? text('scorePending');
   card.querySelector('.score-away').textContent = match.awayScore ?? text('scorePending');
   return card;

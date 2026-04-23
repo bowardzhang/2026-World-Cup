@@ -144,6 +144,16 @@ main {
 
 .team {
   font-size: 0.92rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.team-flag {
+  width: 20px;
+  height: auto;
+  border-radius: 2px;
+  flex-shrink: 0;
 }
 
 .score {
