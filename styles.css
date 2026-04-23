@@ -2,12 +2,25 @@
   color-scheme: light;
   --bg: #f8f9fa;
   --panel: #ffffff;
+  --card: linear-gradient(180deg, #fff 0%, #fafbfc 100%);
   --text: #1f1f1f;
   --muted: #5f6368;
   --line: #d2d5da;
   --primary: #1a73e8;
   --radius: 12px;
   --shadow: 0 1px 3px rgb(60 64 67 / 0.16), 0 4px 8px rgb(60 64 67 / 0.12);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #111214;
+  --panel: #1e2022;
+  --card: #252729;
+  --text: #e8eaed;
+  --muted: #9aa0a6;
+  --line: #3c4043;
+  --primary: #4da3ff;
+  --shadow: 0 1px 3px rgb(0 0 0 / 0.4), 0 4px 8px rgb(0 0 0 / 0.3);
 }
 
 * {
@@ -50,8 +63,25 @@ select {
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 0.45rem 0.7rem;
-  background: #fff;
+  background: var(--panel);
+  color: var(--text);
   font-size: 0.95rem;
+}
+
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--text);
+  align-self: end;
+}
+
+.theme-toggle:hover {
+  background: var(--line);
 }
 
 main {
@@ -95,7 +125,7 @@ main {
   padding: 0.6rem;
   display: grid;
   gap: 0.2rem;
-  background: linear-gradient(180deg, #fff, #fcfcfd);
+  background: var(--card);
 }
 
 .match-meta {

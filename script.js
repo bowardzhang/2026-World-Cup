@@ -106,6 +106,19 @@ const languageSelect = document.getElementById('language-select');
 const groupStageContainer = document.getElementById('group-stage');
 const knockoutStageContainer = document.getElementById('knockout-stage');
 const matchTemplate = document.getElementById('match-template');
+const themeToggle = document.getElementById('theme-toggle');
+
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+  themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+  localStorage.setItem('theme', theme);
+}
+
+applyTheme(document.documentElement.dataset.theme || 'light');
+themeToggle.addEventListener('click', () => {
+  applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+});
 
 function text(key) {
   return translations[currentLanguage][key] || translations.en[key] || '';
