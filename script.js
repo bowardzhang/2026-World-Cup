@@ -179,18 +179,23 @@ function renderGroupStage() {
 function renderKnockoutStage() {
   knockoutStageContainer.innerHTML = '';
   scheduleData.knockoutStage.forEach((round) => {
-    const column = document.createElement('section');
+    const column = document.createElement('div');
     column.className = 'round';
 
     const title = document.createElement('h3');
     title.textContent = round.round;
 
-    column.append(title);
+    const slots = document.createElement('div');
+    slots.className = 'bracket-slots';
     round.matches.forEach((match) => {
-      column.append(createMatchCard(match));
+      const slot = document.createElement('div');
+      slot.className = 'bracket-slot';
+      slot.appendChild(createMatchCard(match));
+      slots.appendChild(slot);
     });
 
-    knockoutStageContainer.append(column);
+    column.append(title, slots);
+    knockoutStageContainer.appendChild(column);
   });
 }
 
