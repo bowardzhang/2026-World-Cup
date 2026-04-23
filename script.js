@@ -1,3 +1,41 @@
+const TEAM_FLAGS = {
+  'Mexico': '🇲🇽', 'Canada': '🇨🇦', 'USA': '🇺🇸',
+  'Argentina': '🇦🇷', 'Brazil': '🇧🇷', 'Uruguay': '🇺🇾',
+  'Colombia': '🇨🇴', 'Ecuador': '🇪🇨', 'Chile': '🇨🇱',
+  'Peru': '🇵🇪', 'Venezuela': '🇻🇪', 'Bolivia': '🇧🇴',
+  'Paraguay': '🇵🇾',
+  'Germany': '🇩🇪', 'Spain': '🇪🇸', 'France': '🇫🇷',
+  'England': '🏴󠁧󠁢󠁥󠁮󠁧󠁿', 'Portugal': '🇵🇹', 'Netherlands': '🇳🇱',
+  'Belgium': '🇧🇪', 'Italy': '🇮🇹', 'Croatia': '🇭🇷',
+  'Switzerland': '🇨🇭', 'Austria': '🇦🇹', 'Denmark': '🇩🇰',
+  'Sweden': '🇸🇪', 'Norway': '🇳🇴', 'Poland': '🇵🇱',
+  'Serbia': '🇷🇸', 'Hungary': '🇭🇺', 'Romania': '🇷🇴',
+  'Turkey': '🇹🇷', 'Greece': '🇬🇷', 'Czech Republic': '🇨🇿',
+  'Slovakia': '🇸🇰', 'Albania': '🇦🇱', 'Scotland': '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
+  'Wales': '🏴󠁧󠁢󠁷󠁬󠁳󠁿', 'Ukraine': '🇺🇦', 'Slovenia': '🇸🇮',
+  'Kosovo': '🇽🇰', 'Georgia': '🇬🇪',
+  'Japan': '🇯🇵', 'South Korea': '🇰🇷', 'Korea Republic': '🇰🇷',
+  'Australia': '🇦🇺', 'Iran': '🇮🇷', 'Saudi Arabia': '🇸🇦',
+  'Jordan': '🇯🇴', 'Iraq': '🇮🇶', 'Uzbekistan': '🇺🇿',
+  'China': '🇨🇳', 'Indonesia': '🇮🇩', 'Oman': '🇴🇲',
+  'UAE': '🇦🇪', 'Bahrain': '🇧🇭', 'Qatar': '🇶🇦',
+  'Syria': '🇸🇾', 'Kuwait': '🇰🇼',
+  'Morocco': '🇲🇦', 'Senegal': '🇸🇳', 'Nigeria': '🇳🇬',
+  'Egypt': '🇪🇬', 'Cameroon': '🇨🇲', 'Ghana': '🇬🇭',
+  'Tunisia': '🇹🇳', 'Algeria': '🇩🇿', 'Mali': '🇲🇱',
+  'South Africa': '🇿🇦', 'Cape Verde': '🇨🇻',
+  "Côte d'Ivoire": '🇨🇮', 'Ivory Coast': '🇨🇮',
+  'Costa Rica': '🇨🇷', 'Panama': '🇵🇦', 'Honduras': '🇭🇳',
+  'Jamaica': '🇯🇲', 'El Salvador': '🇸🇻', 'Guatemala': '🇬🇹',
+  'Cuba': '🇨🇺', 'Trinidad and Tobago': '🇹🇹',
+  'New Zealand': '🇳🇿', 'Fiji': '🇫🇯',
+};
+
+function teamWithFlag(name) {
+  const flag = TEAM_FLAGS[name];
+  return flag ? `${flag} ${name}` : name;
+}
+
 const translations = {
   en: {
     htmlLang: 'en',
@@ -89,8 +127,8 @@ function createMatchCard(match) {
   const card = matchTemplate.content.firstElementChild.cloneNode(true);
   card.querySelector('.match-date').textContent = formatDate(match.date);
   card.querySelector('.match-venue').textContent = match.venue || '';
-  card.querySelector('.team-home').textContent = match.homeTeam;
-  card.querySelector('.team-away').textContent = match.awayTeam;
+  card.querySelector('.team-home').textContent = teamWithFlag(match.homeTeam);
+  card.querySelector('.team-away').textContent = teamWithFlag(match.awayTeam);
   card.querySelector('.score-home').textContent = match.homeScore ?? text('scorePending');
   card.querySelector('.score-away').textContent = match.awayScore ?? text('scorePending');
   return card;
