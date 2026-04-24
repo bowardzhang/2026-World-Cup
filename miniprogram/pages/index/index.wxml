@@ -1,0 +1,89 @@
+<view class="page">
+  <view class="header">
+    <view class="header-left">
+      <text class="title">{{t.pageTitle}}</text>
+      <text class="subtitle">{{t.subtitle}}</text>
+      <text class="data-status {{dataStatusLive ? 'live' : ''}}">{{dataStatusText}}</text>
+    </view>
+    <picker mode="selector" range="{{languages}}" range-key="label" value="{{langIndex}}" bindchange="onLangChange">
+      <view class="lang-picker">
+        <text class="lang-label">{{t.languageLabel}}</text>
+        <text class="lang-value">{{languages[langIndex].label}}</text>
+      </view>
+    </picker>
+  </view>
+
+  <view class="tabs">
+    <view class="tab {{activeTab === 'group' ? 'tab-active' : ''}}" bindtap="onTabSwitch" data-tab="group">
+      <text>{{t.groupStageTitle}}</text>
+    </view>
+    <view class="tab {{activeTab === 'bracket' ? 'tab-active' : ''}}" bindtap="onTabSwitch" data-tab="bracket">
+      <text>{{t.knockoutTitle}}</text>
+    </view>
+  </view>
+
+  <view class="content-area">
+    <view wx:if="{{loading}}" class="loading-wrap">
+      <text class="loading-text">{{t.loading}}</text>
+    </view>
+
+    <scroll-view wx:elif="{{activeTab === 'group'}}" scroll-y style="height:100%">
+      <view wx:for="{{groupStage}}" wx:key="group" class="group-section">
+        <text class="group-title">{{t.groupLabel}} {{item.group}}</text>
+        <view class="group-matches">
+          <view wx:for="{{item.matches}}" wx:key="dateFormatted" wx:for-item="match" class="match-card">
+            <view class="match-meta">
+              <text>{{match.dateFormatted}}</text>
+              <text class="venue">{{match.venue}}</text>
+            </view>
+            <view class="match-row">
+              <view class="team-col">
+                <image wx:if="{{match.homeFlagUrl}}" src="{{match.homeFlagUrl}}" class="flag" mode="aspectFit" />
+                <text class="team-name">{{match.homeTeamDisplay}}</text>
+              </view>
+              <text class="score">{{match.homeScore}}</text>
+            </view>
+            <view class="match-row">
+              <view class="team-col">
+                <image wx:if="{{match.awayFlagUrl}}" src="{{match.awayFlagUrl}}" class="flag" mode="aspectFit" />
+                <text class="team-name">{{match.awayTeamDisplay}}</text>
+              </view>
+              <text class="score">{{match.awayScore}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <scroll-view wx:elif="{{activeTab === 'bracket'}}" scroll-x style="height:100%">
+      <view class="bracket">
+        <view wx:for="{{knockoutStage}}" wx:key="round" class="round-col">
+          <text class="round-title">{{item.roundDisplay}}</text>
+          <view class="bracket-slots">
+            <view wx:for="{{item.matches}}" wx:key="dateFormatted" wx:for-item="match" class="bracket-slot {{match.slotClass}}">
+              <view class="match-card bracket-card">
+                <view class="match-meta">
+                  <text>{{match.dateFormatted}}</text>
+                </view>
+                <view class="match-row">
+                  <view class="team-col">
+                    <image wx:if="{{match.homeFlagUrl}}" src="{{match.homeFlagUrl}}" class="flag" mode="aspectFit" />
+                    <text class="team-name">{{match.homeTeamDisplay}}</text>
+                  </view>
+                  <text class="score">{{match.homeScore}}</text>
+                </view>
+                <view class="match-row">
+                  <view class="team-col">
+                    <image wx:if="{{match.awayFlagUrl}}" src="{{match.awayFlagUrl}}" class="flag" mode="aspectFit" />
+                    <text class="team-name">{{match.awayTeamDisplay}}</text>
+                  </view>
+                  <text class="score">{{match.awayScore}}</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+</view>

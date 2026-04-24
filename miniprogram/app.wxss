@@ -1,0 +1,26 @@
+page {
+  --bg: #f8f9fa;
+  --panel: #ffffff;
+  --card: #ffffff;
+  --text: #1f1f1f;
+  --muted: #5f6368;
+  --line: #d2d5da;
+  --primary: #1a73e8;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  page {
+    --bg: #111214;
+    --panel: #1e2022;
+    --card: #252729;
+    --text: #e8eaed;
+    --muted: #9aa0a6;
+    --line: #3c4043;
+    --primary: #4da3ff;
+  }
+}
+
+* { box-sizing: border-box; }

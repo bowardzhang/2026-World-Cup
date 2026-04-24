@@ -1,0 +1,14 @@
+{
+  "description": "2026 FIFA World Cup Mini Program",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true
+  },
+  "compileType": "miniprogram",
+  "libVersion": "3.0.0",
+  "appid": "wx0000000000000000",
+  "projectname": "2026-world-cup"
+}
