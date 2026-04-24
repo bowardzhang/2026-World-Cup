@@ -1,3 +1,53 @@
+const TEAM_CODES = {
+  'Mexico': 'mx', 'Canada': 'ca', 'USA': 'us',
+  'Argentina': 'ar', 'Brazil': 'br', 'Uruguay': 'uy',
+  'Colombia': 'co', 'Ecuador': 'ec', 'Chile': 'cl',
+  'Peru': 'pe', 'Venezuela': 've', 'Bolivia': 'bo',
+  'Paraguay': 'py',
+  'Germany': 'de', 'Spain': 'es', 'France': 'fr',
+  'England': 'gb-eng', 'Portugal': 'pt', 'Netherlands': 'nl',
+  'Belgium': 'be', 'Italy': 'it', 'Croatia': 'hr',
+  'Switzerland': 'ch', 'Austria': 'at', 'Denmark': 'dk',
+  'Sweden': 'se', 'Norway': 'no', 'Poland': 'pl',
+  'Serbia': 'rs', 'Hungary': 'hu', 'Romania': 'ro',
+  'Turkey': 'tr', 'Greece': 'gr', 'Czech Republic': 'cz',
+  'Czechia': 'cz', 'Slovakia': 'sk', 'Albania': 'al',
+  'Scotland': 'gb-sct', 'Wales': 'gb-wls', 'Ukraine': 'ua',
+  'Slovenia': 'si', 'Kosovo': 'xk', 'Georgia': 'ge',
+  'Bosnia and Herzegovina': 'ba',
+  'Japan': 'jp', 'South Korea': 'kr', 'Korea Republic': 'kr',
+  'Australia': 'au', 'Iran': 'ir', 'Saudi Arabia': 'sa',
+  'Jordan': 'jo', 'Iraq': 'iq', 'Uzbekistan': 'uz',
+  'China': 'cn', 'Indonesia': 'id', 'Oman': 'om',
+  'UAE': 'ae', 'Bahrain': 'bh', 'Qatar': 'qa',
+  'Syria': 'sy', 'Kuwait': 'kw',
+  'Morocco': 'ma', 'Senegal': 'sn', 'Nigeria': 'ng',
+  'Egypt': 'eg', 'Cameroon': 'cm', 'Ghana': 'gh',
+  'Tunisia': 'tn', 'Algeria': 'dz', 'Mali': 'ml',
+  'South Africa': 'za', 'Cape Verde': 'cv', 'Cabo Verde': 'cv',
+  'DR Congo': 'cd', 'Congo DR': 'cd',
+  "Côte d'Ivoire": 'ci', 'Ivory Coast': 'ci',
+  'Costa Rica': 'cr', 'Panama': 'pa', 'Honduras': 'hn',
+  'Jamaica': 'jm', 'El Salvador': 'sv', 'Guatemala': 'gt',
+  'Cuba': 'cu', 'Trinidad and Tobago': 'tt',
+  'Haiti': 'ht', 'Curaçao': 'cw', 'Curacao': 'cw',
+  'New Zealand': 'nz', 'Fiji': 'fj',
+};
+
+function setTeamName(el, name) {
+  el.textContent = '';
+  const code = TEAM_CODES[name];
+  if (code) {
+    const img = document.createElement('img');
+    img.src = `https://flagcdn.com/w20/${code}.png`;
+    img.srcset = `https://flagcdn.com/w40/${code}.png 2x`;
+    img.alt = name;
+    img.className = 'team-flag';
+    el.appendChild(img);
+  }
+  el.appendChild(document.createTextNode(code ? ` ${name}` : name));
+}
+
 const translations = {
   en: {
     htmlLang: 'en',
@@ -68,6 +118,19 @@ const languageSelect = document.getElementById('language-select');
 const groupStageContainer = document.getElementById('group-stage');
 const knockoutStageContainer = document.getElementById('knockout-stage');
 const matchTemplate = document.getElementById('match-template');
+const themeToggle = document.getElementById('theme-toggle');
+
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+  themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+  localStorage.setItem('theme', theme);
+}
+
+applyTheme(document.documentElement.dataset.theme || 'light');
+themeToggle.addEventListener('click', () => {
+  applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+});
 
 function text(key) {
   return translations[currentLanguage][key] || translations.en[key] || '';
@@ -89,8 +152,8 @@ function createMatchCard(match) {
   const card = matchTemplate.content.firstElementChild.cloneNode(true);
   card.querySelector('.match-date').textContent = formatDate(match.date);
   card.querySelector('.match-venue').textContent = match.venue || '';
-  card.querySelector('.team-home').textContent = match.homeTeam;
-  card.querySelector('.team-away').textContent = match.awayTeam;
+  setTeamName(card.querySelector('.team-home'), match.homeTeam);
+  setTeamName(card.querySelector('.team-away'), match.awayTeam);
   card.querySelector('.score-home').textContent = match.homeScore ?? text('scorePending');
   card.querySelector('.score-away').textContent = match.awayScore ?? text('scorePending');
   return card;
@@ -119,18 +182,23 @@ function renderGroupStage() {
 function renderKnockoutStage() {
   knockoutStageContainer.innerHTML = '';
   scheduleData.knockoutStage.forEach((round) => {
-    const column = document.createElement('section');
+    const column = document.createElement('div');
     column.className = 'round';
 
     const title = document.createElement('h3');
     title.textContent = round.round;
 
-    column.append(title);
+    const slots = document.createElement('div');
+    slots.className = 'bracket-slots';
     round.matches.forEach((match) => {
-      column.append(createMatchCard(match));
+      const slot = document.createElement('div');
+      slot.className = 'bracket-slot';
+      slot.appendChild(createMatchCard(match));
+      slots.appendChild(slot);
     });
 
-    knockoutStageContainer.append(column);
+    column.append(title, slots);
+    knockoutStageContainer.appendChild(column);
   });
 }
 

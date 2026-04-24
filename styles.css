@@ -2,12 +2,25 @@
   color-scheme: light;
   --bg: #f8f9fa;
   --panel: #ffffff;
+  --card: linear-gradient(180deg, #fff 0%, #fafbfc 100%);
   --text: #1f1f1f;
   --muted: #5f6368;
   --line: #d2d5da;
   --primary: #1a73e8;
   --radius: 12px;
   --shadow: 0 1px 3px rgb(60 64 67 / 0.16), 0 4px 8px rgb(60 64 67 / 0.12);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #111214;
+  --panel: #1e2022;
+  --card: #252729;
+  --text: #e8eaed;
+  --muted: #9aa0a6;
+  --line: #3c4043;
+  --primary: #4da3ff;
+  --shadow: 0 1px 3px rgb(0 0 0 / 0.4), 0 4px 8px rgb(0 0 0 / 0.3);
 }
 
 * {
@@ -50,8 +63,25 @@ select {
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 0.45rem 0.7rem;
-  background: #fff;
+  background: var(--panel);
+  color: var(--text);
   font-size: 0.95rem;
+}
+
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--text);
+  align-self: end;
+}
+
+.theme-toggle:hover {
+  background: var(--line);
 }
 
 main {
@@ -95,7 +125,7 @@ main {
   padding: 0.6rem;
   display: grid;
   gap: 0.2rem;
-  background: linear-gradient(180deg, #fff, #fcfcfd);
+  background: var(--card);
 }
 
 .match-meta {
@@ -114,6 +144,16 @@ main {
 
 .team {
   font-size: 0.92rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.team-flag {
+  width: 20px;
+  height: auto;
+  border-radius: 2px;
+  flex-shrink: 0;
 }
 
 .score {
@@ -148,34 +188,94 @@ main {
 }
 
 .knockout-bracket {
-  min-width: 1100px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 1rem;
+  display: flex;
+  align-items: stretch;
+  min-width: max-content;
+  padding: 0.5rem 0 1rem;
 }
 
 .round {
-  display: grid;
-  gap: 0.9rem;
-  align-content: start;
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 250px;
 }
 
 .round h3 {
-  margin: 0;
+  margin: 0 0 0.75rem;
   color: var(--primary);
   font-size: 0.92rem;
+  text-align: center;
+  white-space: nowrap;
 }
 
-.round .match-card {
+.bracket-slots {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.bracket-slot {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  min-height: 90px;
   position: relative;
+  padding: 4px 28px;
 }
 
-.round:not(:first-child) .match-card::before {
-  content: "";
+.bracket-slot .match-card {
+  flex: 1;
+}
+
+.round:first-child .bracket-slot {
+  padding-left: 0;
+}
+
+.round:last-child .bracket-slot {
+  padding-right: 0;
+}
+
+/* Incoming horizontal connector from previous round */
+.round:not(:first-child) .bracket-slot::before {
+  content: '';
   position: absolute;
-  left: -0.65rem;
+  left: 0;
   top: 50%;
-  width: 0.65rem;
+  width: 28px;
+  border-top: 2px solid var(--line);
+}
+
+/* Outgoing connector — top of pair: ─┐ (right + down) */
+.round:not(:last-child) .bracket-slot:nth-child(odd):not(:only-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 28px;
+  height: calc(50% + 1px);
+  border-top: 2px solid var(--line);
+  border-right: 2px solid var(--line);
+}
+
+/* Outgoing connector — bottom of pair: ─┘ (up + right) */
+.round:not(:last-child) .bracket-slot:nth-child(even)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 28px;
+  height: calc(50% + 1px);
+  border-bottom: 2px solid var(--line);
+  border-right: 2px solid var(--line);
+}
+
+/* Outgoing connector — only child: straight horizontal passthrough */
+.round:not(:last-child) .bracket-slot:only-child::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 28px;
   border-top: 2px solid var(--line);
 }
 

@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>2026 World Cup Schedule</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=BUILD_HASH" />
+    <script>
+      const t = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.dataset.theme = t;
+    </script>
   </head>
   <body>
     <header class="site-header">
@@ -12,6 +16,7 @@
         <h1 id="page-title">2026 FIFA World Cup Schedule</h1>
         <p id="page-subtitle">Group stage fixtures and knockout bracket</p>
       </div>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme"></button>
       <label class="language-picker" for="language-select">
         <span id="language-label">Language</span>
         <select id="language-select" aria-label="Language selector">
@@ -58,6 +63,6 @@
       </article>
     </template>
 
-    <script src="script.js" type="module"></script>
+    <script src="script.js?v=BUILD_HASH" type="module"></script>
   </body>
 </html>
