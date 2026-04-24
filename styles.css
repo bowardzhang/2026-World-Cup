@@ -52,6 +52,20 @@ h1 {
   color: var(--muted);
 }
 
+.data-status {
+  margin: 0.15rem 0 0;
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.data-status[data-live="true"] {
+  color: #34a853;
+}
+
+[data-theme="dark"] .data-status[data-live="true"] {
+  color: #57bb76;
+}
+
 .language-picker {
   display: grid;
   gap: 0.35rem;

@@ -15,6 +15,7 @@ const TEAM_CODES = {
   'Scotland': 'gb-sct', 'Wales': 'gb-wls', 'Ukraine': 'ua',
   'Slovenia': 'si', 'Kosovo': 'xk', 'Georgia': 'ge',
   'Bosnia and Herzegovina': 'ba',
+  'Bosnia & Herzegovina': 'ba',
   'Japan': 'jp', 'South Korea': 'kr', 'Korea Republic': 'kr',
   'Australia': 'au', 'Iran': 'ir', 'Saudi Arabia': 'sa',
   'Jordan': 'jo', 'Iraq': 'iq', 'Uzbekistan': 'uz',
@@ -59,7 +60,9 @@ const translations = {
     dragTip: 'Drag left/right to explore the full bracket',
     groupLabel: 'Group',
     scorePending: '-',
-    datePending: 'TBD'
+    datePending: 'TBD',
+    dataStatusLive: 'Live data',
+    dataStatusCached: 'Offline data',
   },
   zh: {
     htmlLang: 'zh-CN',
@@ -71,7 +74,9 @@ const translations = {
     dragTip: '左右拖动查看完整淘汰赛对阵图',
     groupLabel: '小组',
     scorePending: '-',
-    datePending: '待定'
+    datePending: '待定',
+    dataStatusLive: '实时数据',
+    dataStatusCached: '本地数据',
   },
   fr: {
     htmlLang: 'fr',
@@ -83,7 +88,9 @@ const translations = {
     dragTip: 'Faites glisser à gauche/droite pour voir tout le tableau',
     groupLabel: 'Groupe',
     scorePending: '-',
-    datePending: 'À définir'
+    datePending: 'À définir',
+    dataStatusLive: 'Données en direct',
+    dataStatusCached: 'Données locales',
   },
   de: {
     htmlLang: 'de',
@@ -95,7 +102,9 @@ const translations = {
     dragTip: 'Zum Erkunden des Turnierbaums nach links/rechts ziehen',
     groupLabel: 'Gruppe',
     scorePending: '-',
-    datePending: 'Offen'
+    datePending: 'Offen',
+    dataStatusLive: 'Live-Daten',
+    dataStatusCached: 'Lokale Daten',
   },
   es: {
     htmlLang: 'es',
@@ -107,12 +116,15 @@ const translations = {
     dragTip: 'Arrastra izquierda/derecha para ver el cuadro completo',
     groupLabel: 'Grupo',
     scorePending: '-',
-    datePending: 'Por definir'
+    datePending: 'Por definir',
+    dataStatusLive: 'Datos en vivo',
+    dataStatusCached: 'Datos locales',
   }
 };
 
 let scheduleData;
 let currentLanguage = 'en';
+let dataSource = 'cached';
 
 const languageSelect = document.getElementById('language-select');
 const groupStageContainer = document.getElementById('group-stage');
@@ -210,6 +222,11 @@ function applyTranslations() {
   document.getElementById('group-stage-title').textContent = text('groupStageTitle');
   document.getElementById('knockout-title').textContent = text('knockoutTitle');
   document.getElementById('drag-tip').textContent = text('dragTip');
+  const statusEl = document.getElementById('data-status');
+  if (statusEl) {
+    statusEl.textContent = text(dataSource === 'live' ? 'dataStatusLive' : 'dataStatusCached');
+    statusEl.dataset.live = dataSource === 'live';
+  }
 }
 
 function setupHorizontalDrag() {
@@ -248,12 +265,71 @@ function setupHorizontalDrag() {
   });
 }
 
+function parseMatchDateTime(date, time) {
+  if (!date) return null;
+  if (!time) return `${date}T00:00:00Z`;
+  const [timeStr, utcPart = 'UTC'] = time.split(' ');
+  const [hours, minutes] = timeStr.split(':').map(Number);
+  const offsetMatch = utcPart.match(/UTC([+-]\d+)/);
+  const offsetHours = offsetMatch ? parseInt(offsetMatch[1], 10) : 0;
+  const [year, month, day] = date.split('-').map(Number);
+  return new Date(Date.UTC(year, month - 1, day, hours - offsetHours, minutes)).toISOString();
+}
+
+function transformMatch(m) {
+  const ft = m.score?.ft;
+  return {
+    date: parseMatchDateTime(m.date, m.time),
+    venue: m.ground || '',
+    homeTeam: m.team1 || '',
+    awayTeam: m.team2 || '',
+    homeScore: ft != null ? ft[0] : null,
+    awayScore: ft != null ? ft[1] : null,
+  };
+}
+
+function transformOpenFootballData(raw) {
+  const matches = raw.matches || [];
+  const groupMatches = matches.filter((m) => m.group);
+  const knockoutMatches = matches.filter((m) => !m.group);
+
+  const groupMap = {};
+  groupMatches.forEach((m) => {
+    if (!groupMap[m.group]) groupMap[m.group] = [];
+    groupMap[m.group].push(transformMatch(m));
+  });
+  const groupStage = Object.keys(groupMap).sort().map((g) => ({ group: g, matches: groupMap[g] }));
+
+  const roundOrder = [];
+  const roundMap = {};
+  knockoutMatches.forEach((m) => {
+    if (!roundMap[m.round]) { roundMap[m.round] = []; roundOrder.push(m.round); }
+    roundMap[m.round].push(transformMatch(m));
+  });
+  const knockoutStage = roundOrder.map((r) => ({ round: r, matches: roundMap[r] }));
+
+  return { groupStage, knockoutStage };
+}
+
 async function loadSchedule() {
-  const response = await fetch('data/schedule.json', { cache: 'no-store' });
-  if (!response.ok) {
-    throw new Error(`Failed to load schedule JSON: ${response.status}`);
+  try {
+    const res = await fetch(
+      'https://raw.githubusercontent.com/openfootball/worldcup.json/master/2026/worldcup.json',
+      { cache: 'no-store' }
+    );
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const raw = await res.json();
+    scheduleData = transformOpenFootballData(raw);
+    dataSource = 'live';
+    return;
+  } catch (err) {
+    console.warn('Live data unavailable, using local data:', err.message);
   }
+
+  const response = await fetch('data/schedule.json', { cache: 'no-store' });
+  if (!response.ok) throw new Error(`Failed to load schedule: ${response.status}`);
   scheduleData = await response.json();
+  dataSource = 'cached';
 }
 
 function renderPage() {
