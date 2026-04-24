@@ -5,6 +5,7 @@
   background: var(--bg);
 }
 
+/* Header */
 .header {
   display: flex;
   justify-content: space-between;
@@ -55,6 +56,7 @@
 .lang-label { font-size: 20rpx; color: var(--muted); }
 .lang-value { font-size: 26rpx; color: var(--text); font-weight: 500; }
 
+/* Tabs */
 .tabs {
   display: flex;
   background: var(--panel);
@@ -77,6 +79,7 @@
   font-weight: 600;
 }
 
+/* Content area fills remaining height */
 .content-area {
   flex: 1;
   height: 0;
@@ -87,7 +90,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 80rpx 0;
   height: 100%;
 }
 
@@ -212,7 +214,7 @@
 
 .bracket-card { flex: 1; }
 
-/* Left connector (incoming) */
+/* Connector lines */
 .round-col:not(:first-child) .bracket-slot::before {
   content: '';
   position: absolute;
@@ -222,7 +224,6 @@
   border-top: 2rpx solid var(--line);
 }
 
-/* Right connector: top of pair */
 .bracket-slot.odd::after {
   content: '';
   position: absolute;
@@ -234,7 +235,6 @@
   border-right: 2rpx solid var(--line);
 }
 
-/* Right connector: bottom of pair */
 .bracket-slot.even::after {
   content: '';
   position: absolute;
@@ -246,7 +246,6 @@
   border-right: 2rpx solid var(--line);
 }
 
-/* Right connector: only child (straight passthrough) */
 .bracket-slot.only::after {
   content: '';
   position: absolute;
