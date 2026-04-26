@@ -48,6 +48,7 @@ Page({
     var groupStage = globalData.scheduleData.groupStage.map(function(g) {
       return {
         group: g.group,
+        groupDisplay: i18n.groupName(g.group, lang),
         matches: g.matches.map(function(m) { return self._enrichMatch(m, lang, t); }),
       };
     });
@@ -65,8 +66,9 @@ Page({
     });
 
     var groups = groupStage.map(function(g) { return g.group; });
-    var groupRow1 = groups.slice(0, 6);
-    var groupRow2 = groups.slice(6, 12);
+    var groupRow1 = groups.slice(0, 6).map(function(l) { return { letter: l, display: i18n.groupName(l, lang) }; });
+    var groupRow2 = groups.slice(6, 12).map(function(l) { return { letter: l, display: i18n.groupName(l, lang) }; });
+    var selectedGroup = this.data.selectedGroup || (groups[0] || '');
 
     wx.setNavigationBarTitle({ title: t.navTitle });
 
@@ -77,6 +79,7 @@ Page({
       knockoutStage: knockoutStage,
       groupRow1: groupRow1,
       groupRow2: groupRow2,
+      selectedGroup: selectedGroup,
       dataStatusText: globalData.dataSource === 'live' ? t.dataStatusLive : t.dataStatusCached,
       dataStatusLive: globalData.dataSource === 'live',
     });

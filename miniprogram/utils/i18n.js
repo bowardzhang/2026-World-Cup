@@ -76,4 +76,10 @@ function text(key, lang) {
   return t[key] || translations.en[key] || '';
 }
 
-module.exports = { translations: translations, text: text };
+function groupName(letter, lang) {
+  if (lang === 'zh') return letter + '组';
+  var t = translations[lang] || translations.en;
+  return (t.groupLabel || 'Group') + ' ' + letter;
+}
+
+module.exports = { translations: translations, text: text, groupName: groupName };

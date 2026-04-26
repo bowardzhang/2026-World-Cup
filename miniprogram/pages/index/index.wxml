@@ -9,8 +9,7 @@
     </view>
     <picker mode="selector" range="{{languages}}" range-key="label" value="{{langIndex}}" bindchange="onLangChange">
       <view class="lang-picker">
-        <text class="lang-label">{{t.languageLabel}}</text>
-        <text class="lang-value">{{languages[langIndex].label}}</text>
+        <text class="lang-globe">🌐</text>
       </view>
     </picker>
   </view>
@@ -26,17 +25,17 @@
 
   <view wx:if="{{activeTab === 'group' && groupRow1.length}}" class="group-nav">
     <view class="group-nav-row">
-      <view wx:for="{{groupRow1}}" wx:key="*this"
-            class="group-nav-btn {{selectedGroup === item ? 'active' : ''}}"
-            bindtap="onGroupSelect" data-group="{{item}}">
-        <text>{{t.groupLabel}} {{item}}</text>
+      <view wx:for="{{groupRow1}}" wx:key="letter"
+            class="group-nav-btn {{selectedGroup === item.letter ? 'active' : ''}}"
+            bindtap="onGroupSelect" data-group="{{item.letter}}">
+        <text>{{item.display}}</text>
       </view>
     </view>
     <view class="group-nav-row">
-      <view wx:for="{{groupRow2}}" wx:key="*this"
-            class="group-nav-btn {{selectedGroup === item ? 'active' : ''}}"
-            bindtap="onGroupSelect" data-group="{{item}}">
-        <text>{{t.groupLabel}} {{item}}</text>
+      <view wx:for="{{groupRow2}}" wx:key="letter"
+            class="group-nav-btn {{selectedGroup === item.letter ? 'active' : ''}}"
+            bindtap="onGroupSelect" data-group="{{item.letter}}">
+        <text>{{item.display}}</text>
       </view>
     </view>
   </view>
@@ -46,9 +45,9 @@
       <text class="loading-text">{{t.loading}}</text>
     </view>
 
-    <scroll-view wx:elif="{{activeTab === 'group'}}" scroll-y scroll-into-view="{{scrollTarget}}" style="height:100%">
-      <view wx:for="{{groupStage}}" wx:key="group" id="group-{{item.group}}" class="group-section">
-        <text class="group-title">{{t.groupLabel}} {{item.group}}</text>
+    <scroll-view wx:elif="{{activeTab === 'group'}}" scroll-y style="height:100%">
+      <view wx:for="{{groupStage}}" wx:key="group" wx:if="{{item.group === selectedGroup}}" class="group-section">
+        <text class="group-title">{{item.groupDisplay}}</text>
         <view class="group-matches">
           <view wx:for="{{item.matches}}" wx:key="dateFormatted" wx:for-item="match" class="match-card">
             <view class="match-meta">
