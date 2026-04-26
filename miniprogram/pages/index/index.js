@@ -16,6 +16,10 @@ Page({
     activeTab: 'group',
     groupStage: [],
     knockoutStage: [],
+    groupRow1: [],
+    groupRow2: [],
+    selectedGroup: '',
+    scrollTarget: '',
     t: i18n.translations.zh,
     languages: LANG_LIST,
     langIndex: 1,
@@ -60,11 +64,19 @@ Page({
       };
     });
 
+    var groups = groupStage.map(function(g) { return g.group; });
+    var groupRow1 = groups.slice(0, 6);
+    var groupRow2 = groups.slice(6, 12);
+
+    wx.setNavigationBarTitle({ title: t.navTitle });
+
     this.setData({
       loading: false,
       t: t,
       groupStage: groupStage,
       knockoutStage: knockoutStage,
+      groupRow1: groupRow1,
+      groupRow2: groupRow2,
       dataStatusText: globalData.dataSource === 'live' ? t.dataStatusLive : t.dataStatusCached,
       dataStatusLive: globalData.dataSource === 'live',
     });
@@ -105,5 +117,10 @@ Page({
     var t = i18n.translations[lang] || i18n.translations.zh;
     this.setData({ langIndex: idx, t: t });
     this._render();
+  },
+
+  onGroupSelect: function(e) {
+    var group = e.currentTarget.dataset.group;
+    this.setData({ selectedGroup: group, scrollTarget: 'group-' + group });
   },
 });

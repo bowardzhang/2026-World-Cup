@@ -1,7 +1,7 @@
 {
   "pages": ["pages/index/index"],
   "window": {
-    "navigationBarTitleText": "2026 World Cup",
+    "navigationBarTitleText": "2026世界杯",
     "navigationBarBackgroundColor": "#1a73e8",
     "navigationBarTextStyle": "white",
     "backgroundColor": "#f8f9fa",

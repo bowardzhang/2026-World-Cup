@@ -1,9 +1,11 @@
 <view class="page">
   <view class="header">
-    <view class="header-left">
-      <text class="title">{{t.pageTitle}}</text>
-      <text class="subtitle">{{t.subtitle}}</text>
-      <text class="data-status {{dataStatusLive ? 'live' : ''}}">{{dataStatusText}}</text>
+    <view class="header-main">
+      <image src="/images/logo.svg" class="logo" mode="aspectFit"/>
+      <view class="header-left">
+        <text class="title">{{t.pageTitle}}</text>
+        <text wx:if="{{dataStatusText}}" class="data-status {{dataStatusLive ? 'live' : ''}}">{{dataStatusText}}</text>
+      </view>
     </view>
     <picker mode="selector" range="{{languages}}" range-key="label" value="{{langIndex}}" bindchange="onLangChange">
       <view class="lang-picker">
@@ -22,13 +24,30 @@
     </view>
   </view>
 
+  <view wx:if="{{activeTab === 'group' && groupRow1.length}}" class="group-nav">
+    <view class="group-nav-row">
+      <view wx:for="{{groupRow1}}" wx:key="*this"
+            class="group-nav-btn {{selectedGroup === item ? 'active' : ''}}"
+            bindtap="onGroupSelect" data-group="{{item}}">
+        <text>{{t.groupLabel}} {{item}}</text>
+      </view>
+    </view>
+    <view class="group-nav-row">
+      <view wx:for="{{groupRow2}}" wx:key="*this"
+            class="group-nav-btn {{selectedGroup === item ? 'active' : ''}}"
+            bindtap="onGroupSelect" data-group="{{item}}">
+        <text>{{t.groupLabel}} {{item}}</text>
+      </view>
+    </view>
+  </view>
+
   <view class="content-area">
     <view wx:if="{{loading}}" class="loading-wrap">
       <text class="loading-text">{{t.loading}}</text>
     </view>
 
-    <scroll-view wx:elif="{{activeTab === 'group'}}" scroll-y style="height:100%">
-      <view wx:for="{{groupStage}}" wx:key="group" class="group-section">
+    <scroll-view wx:elif="{{activeTab === 'group'}}" scroll-y scroll-into-view="{{scrollTarget}}" style="height:100%">
+      <view wx:for="{{groupStage}}" wx:key="group" id="group-{{item.group}}" class="group-section">
         <text class="group-title">{{t.groupLabel}} {{item.group}}</text>
         <view class="group-matches">
           <view wx:for="{{item.matches}}" wx:key="dateFormatted" wx:for-item="match" class="match-card">
