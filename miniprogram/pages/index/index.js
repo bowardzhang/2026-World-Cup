@@ -98,7 +98,7 @@ Page({
     var scoreVal = function(v) { return v !== null && v !== undefined ? String(v) : '-'; };
     return {
       dateFormatted: fmt(m.date),
-      venue: m.venue || '',
+      venue: td.getVenueName(m.venue, lang),
       homeTeamDisplay: td.getTeamName(m.homeTeam, lang),
       awayTeamDisplay: td.getTeamName(m.awayTeam, lang),
       homeFlagUrl: td.getFlagUrl(m.homeTeam),

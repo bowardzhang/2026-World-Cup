@@ -1,5 +1,18 @@
 const teamData = require('./utils/teamData');
 
+function detectSystemLang() {
+  try {
+    var sysLang = (wx.getSystemInfoSync().language || '').toLowerCase();
+    if (sysLang.indexOf('zh') === 0) return 'zh';
+    if (sysLang.indexOf('fr') === 0) return 'fr';
+    if (sysLang.indexOf('de') === 0) return 'de';
+    if (sysLang.indexOf('es') === 0) return 'es';
+    return 'en';
+  } catch(e) {
+    return 'en';
+  }
+}
+
 App({
   globalData: {
     scheduleData: null,
@@ -9,7 +22,8 @@ App({
   },
 
   onLaunch() {
-    this.globalData.language = wx.getStorageSync('language') || 'zh';
+    var savedLang = wx.getStorageSync('language');
+    this.globalData.language = savedLang || detectSystemLang();
     this._fetchLiveData();
   },
 

@@ -129,6 +129,25 @@ var TEAM_TRANSLATIONS = {
   'Fiji':                     { zh: '斐济',            fr: 'Fidji',                de: 'Fidschi',                  es: 'Fiyi' },
 };
 
+var VENUE_TRANSLATIONS = {
+  'Atlanta':            '亚特兰大',
+  'Boston':             '波士顿',
+  'Dallas':             '达拉斯',
+  'Guadalajara':        '瓜达拉哈拉',
+  'Houston':            '休斯顿',
+  'Kansas City':        '堪萨斯城',
+  'Los Angeles':        '洛杉矶',
+  'Mexico City':        '墨西哥城',
+  'Miami':              '迈阿密',
+  'Monterrey':          '蒙特雷',
+  'New York/New Jersey':'纽约/新泽西',
+  'Philadelphia':       '费城',
+  'San Francisco':      '旧金山',
+  'Seattle':            '西雅图',
+  'Toronto':            '多伦多',
+  'Vancouver':          '温哥华',
+};
+
 var ROUND_TRANSLATIONS = {
   zh: {
     'Round of 32': '32强赛', 'Round of 16': '16强赛',
@@ -171,6 +190,12 @@ function getFlagUrl(name) {
 
 function getRoundName(roundName, lang) {
   return (lang !== 'en' && ROUND_TRANSLATIONS[lang] && ROUND_TRANSLATIONS[lang][roundName]) || roundName;
+}
+
+function getVenueName(venue, lang) {
+  if (!venue) return '';
+  if (lang && lang.indexOf('zh') === 0) return VENUE_TRANSLATIONS[venue] || venue;
+  return venue;
 }
 
 function parseMatchDateTime(date, time) {
@@ -230,4 +255,4 @@ function transformOpenFootballData(raw) {
   return { groupStage: groupStage, knockoutStage: knockoutStage };
 }
 
-module.exports = { TEAM_CODES: TEAM_CODES, TEAM_TRANSLATIONS: TEAM_TRANSLATIONS, ROUND_TRANSLATIONS: ROUND_TRANSLATIONS, getTeamName: getTeamName, getFlagUrl: getFlagUrl, getRoundName: getRoundName, transformOpenFootballData: transformOpenFootballData };
+module.exports = { TEAM_CODES: TEAM_CODES, TEAM_TRANSLATIONS: TEAM_TRANSLATIONS, VENUE_TRANSLATIONS: VENUE_TRANSLATIONS, ROUND_TRANSLATIONS: ROUND_TRANSLATIONS, getTeamName: getTeamName, getFlagUrl: getFlagUrl, getRoundName: getRoundName, getVenueName: getVenueName, transformOpenFootballData: transformOpenFootballData };

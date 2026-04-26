@@ -77,7 +77,7 @@ function text(key, lang) {
 }
 
 function groupName(letter, lang) {
-  if (lang === 'zh') return letter + '组';
+  if (lang && lang.indexOf('zh') === 0) return letter + '组';
   var t = translations[lang] || translations.en;
   return (t.groupLabel || 'Group') + ' ' + letter;
 }
