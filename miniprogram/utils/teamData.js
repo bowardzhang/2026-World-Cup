@@ -235,8 +235,9 @@ function transformOpenFootballData(raw) {
 
   var groupMap = {};
   groupMatches.forEach(function(m) {
-    if (!groupMap[m.group]) groupMap[m.group] = [];
-    groupMap[m.group].push(transformMatch(m));
+    var g = (m.group || '').replace(/^Group\s+/i, '').trim();
+    if (!groupMap[g]) groupMap[g] = [];
+    groupMap[g].push(transformMatch(m));
   });
   var groupStage = Object.keys(groupMap).sort().map(function(g) {
     return { group: g, matches: groupMap[g] };
