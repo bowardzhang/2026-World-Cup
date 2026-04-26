@@ -16,7 +16,7 @@ Page({
     activeTab: 'group',
     groupStage: [],
     knockoutStage: [],
-    t: {},
+    t: i18n.translations.zh,
     languages: LANG_LIST,
     langIndex: 1,
     dataStatusText: '',
