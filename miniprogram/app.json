@@ -8,5 +8,6 @@
     "backgroundTextStyle": "light"
   },
   "darkmode": true,
+  "lazyCodeLoading": "requiredComponents",
   "sitemapLocation": "sitemap.json"
 }
