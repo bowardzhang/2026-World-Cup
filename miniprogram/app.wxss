@@ -9,6 +9,7 @@ page {
   background-color: var(--bg);
   color: var(--text);
   font-family: -apple-system, "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+  box-sizing: border-box;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,5 +23,3 @@ page {
     --primary: #4da3ff;
   }
 }
-
-* { box-sizing: border-box; }
