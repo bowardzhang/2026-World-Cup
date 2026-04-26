@@ -130,22 +130,33 @@ var TEAM_TRANSLATIONS = {
 };
 
 var VENUE_TRANSLATIONS = {
-  'Atlanta':            '亚特兰大',
-  'Boston':             '波士顿',
-  'Dallas':             '达拉斯',
-  'Guadalajara':        '瓜达拉哈拉',
-  'Houston':            '休斯顿',
-  'Kansas City':        '堪萨斯城',
-  'Los Angeles':        '洛杉矶',
-  'Mexico City':        '墨西哥城',
-  'Miami':              '迈阿密',
-  'Monterrey':          '蒙特雷',
-  'New York/New Jersey':'纽约/新泽西',
-  'Philadelphia':       '费城',
-  'San Francisco':      '旧金山',
-  'Seattle':            '西雅图',
-  'Toronto':            '多伦多',
-  'Vancouver':          '温哥华',
+  // 美国 USA
+  'Atlanta':                               '亚特兰大',
+  'Boston':                                '波士顿',
+  'Boston (Foxborough)':                   '波士顿（福克斯伯勒）',
+  'Dallas':                                '达拉斯',
+  'Dallas (Arlington)':                    '达拉斯（阿灵顿）',
+  'Houston':                               '休斯顿',
+  'Kansas City':                           '堪萨斯城',
+  'Los Angeles':                           '洛杉矶',
+  'Los Angeles (Inglewood)':               '洛杉矶（英格尔伍德）',
+  'Miami':                                 '迈阿密',
+  'Miami (Miami Gardens)':                 '迈阿密（迈阿密花园）',
+  'New York/New Jersey':                   '纽约/新泽西',
+  'New York/New Jersey (East Rutherford)': '纽约/新泽西（东鲁瑟福德）',
+  'Philadelphia':                          '费城',
+  'San Francisco':                         '旧金山',
+  'San Francisco Bay Area (Santa Clara)':  '旧金山湾区（圣克拉拉）',
+  'Seattle':                               '西雅图',
+  // 加拿大 Canada
+  'Toronto':                               '多伦多',
+  'Vancouver':                             '温哥华',
+  // 墨西哥 Mexico
+  'Guadalajara':                           '瓜达拉哈拉',
+  'Guadalajara (Zapopan)':                 '瓜达拉哈拉（萨波潘）',
+  'Mexico City':                           '墨西哥城',
+  'Monterrey':                             '蒙特雷',
+  'Monterrey (Guadalupe)':                 '蒙特雷（瓜达卢佩）',
 };
 
 var ROUND_TRANSLATIONS = {
