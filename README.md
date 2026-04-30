@@ -1,4 +1,6 @@
-# 2026 World Cup Schedule (Static Web)
+
+
+# <img src="logo.png" width="48"> 2026 World Cup Schedule (Static Web)
 
 A static website for displaying 2026 World Cup fixtures with:
 - Group stage as list cards
