@@ -37,19 +37,34 @@ body {
 .site-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  padding: 1.5rem clamp(1rem, 3vw, 3rem);
+  align-items: center;
+  padding: 1.25rem clamp(1rem, 3vw, 3rem);
   gap: 1rem;
+}
+
+.header-main {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.site-logo {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
 }
 
 h1 {
   margin: 0;
-  font-size: clamp(1.25rem, 1.6rem + 1vw, 2.2rem);
-}
-
-#page-subtitle {
-  margin: 0.4rem 0 0;
-  color: var(--muted);
+  font-size: clamp(1.1rem, 1.4rem + 0.8vw, 2rem);
 }
 
 .data-status {
@@ -66,20 +81,33 @@ h1 {
   color: #57bb76;
 }
 
-.language-picker {
-  display: grid;
-  gap: 0.35rem;
-  color: var(--muted);
-  font-size: 0.9rem;
+.lang-picker {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--panel);
+  cursor: pointer;
 }
 
-select {
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 0.45rem 0.7rem;
-  background: var(--panel);
-  color: var(--text);
-  font-size: 0.95rem;
+.lang-globe {
+  font-size: 1.2rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.lang-picker select {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  border: none;
 }
 
 .theme-toggle {
@@ -109,6 +137,44 @@ main {
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   padding: 1rem;
+}
+
+.group-nav {
+  margin-bottom: 0.75rem;
+}
+
+.group-nav-row {
+  display: flex;
+  gap: 0.45rem;
+  margin-bottom: 0.4rem;
+}
+
+.group-nav-row:last-child { margin-bottom: 0; }
+
+.group-nav-btn {
+  flex: 1;
+  padding: 0.4rem 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.group-nav-btn:hover { color: var(--text); border-color: var(--muted); }
+
+.group-nav-btn.active {
+  color: var(--primary);
+  border-color: var(--primary);
+  font-weight: 600;
+  background: rgba(26, 115, 232, 0.08);
+}
+
+[data-theme="dark"] .group-nav-btn.active {
+  background: rgba(77, 163, 255, 0.12);
 }
 
 .group-list {

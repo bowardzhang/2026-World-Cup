@@ -134,30 +134,60 @@ const ROUND_TRANSLATIONS = {
     'Round of 32': '32强赛', 'Round of 16': '16强赛',
     'Quarter-final': '四分之一决赛', 'Quarter-finals': '四分之一决赛',
     'Semi-final': '半决赛', 'Semi-finals': '半决赛',
-    'Third place': '季军赛', 'Third Place': '季军赛', 'Third-place play-off': '季军赛',
+    'Third place': '季军赛', 'Third Place': '季军赛', 'Third-place play-off': '季军赛', 'Match for third place': '季军赛',
     'Final': '决赛',
   },
   fr: {
     'Round of 32': '32e de finale', 'Round of 16': '16e de finale',
     'Quarter-final': 'Quart de finale', 'Quarter-finals': 'Quarts de finale',
     'Semi-final': 'Demi-finale', 'Semi-finals': 'Demi-finales',
-    'Third place': 'Match pour la 3e place', 'Third Place': 'Match pour la 3e place', 'Third-place play-off': 'Match pour la 3e place',
+    'Third place': 'Match pour la 3e place', 'Third Place': 'Match pour la 3e place', 'Third-place play-off': 'Match pour la 3e place', 'Match for third place': 'Match pour la 3e place',
     'Final': 'Finale',
   },
   de: {
     'Round of 32': 'Runde der 32', 'Round of 16': 'Achtelfinale',
     'Quarter-final': 'Viertelfinale', 'Quarter-finals': 'Viertelfinale',
     'Semi-final': 'Halbfinale', 'Semi-finals': 'Halbfinale',
-    'Third place': 'Spiel um Platz 3', 'Third Place': 'Spiel um Platz 3', 'Third-place play-off': 'Spiel um Platz 3',
+    'Third place': 'Spiel um Platz 3', 'Third Place': 'Spiel um Platz 3', 'Third-place play-off': 'Spiel um Platz 3', 'Match for third place': 'Spiel um Platz 3',
     'Final': 'Finale',
   },
   es: {
     'Round of 32': 'Ronda de 32', 'Round of 16': 'Octavos de final',
     'Quarter-final': 'Cuartos de final', 'Quarter-finals': 'Cuartos de final',
     'Semi-final': 'Semifinal', 'Semi-finals': 'Semifinales',
-    'Third place': 'Tercer puesto', 'Third Place': 'Tercer puesto', 'Third-place play-off': 'Tercer puesto',
+    'Third place': 'Tercer puesto', 'Third Place': 'Tercer puesto', 'Third-place play-off': 'Tercer puesto', 'Match for third place': 'Tercer puesto',
     'Final': 'Final',
   },
+};
+
+const VENUE_TRANSLATIONS = {
+  // USA
+  'Atlanta':                               '亚特兰大',
+  'Boston':                                '波士顿',
+  'Boston (Foxborough)':                   '波士顿（福克斯伯勒）',
+  'Dallas':                                '达拉斯',
+  'Dallas (Arlington)':                    '达拉斯（阿灵顿）',
+  'Houston':                               '休斯顿',
+  'Kansas City':                           '堪萨斯城',
+  'Los Angeles':                           '洛杉矶',
+  'Los Angeles (Inglewood)':               '洛杉矶（英格尔伍德）',
+  'Miami':                                 '迈阿密',
+  'Miami (Miami Gardens)':                 '迈阿密（迈阿密花园）',
+  'New York/New Jersey':                   '纽约/新泽西',
+  'New York/New Jersey (East Rutherford)': '纽约/新泽西（东鲁瑟福德）',
+  'Philadelphia':                          '费城',
+  'San Francisco':                         '旧金山',
+  'San Francisco Bay Area (Santa Clara)':  '旧金山湾区（圣克拉拉）',
+  'Seattle':                               '西雅图',
+  // Canada
+  'Toronto':                               '多伦多',
+  'Vancouver':                             '温哥华',
+  // Mexico
+  'Guadalajara':                           '瓜达拉哈拉',
+  'Guadalajara (Zapopan)':                 '瓜达拉哈拉（萨波潘）',
+  'Mexico City':                           '墨西哥城',
+  'Monterrey':                             '蒙特雷',
+  'Monterrey (Guadalupe)':                 '蒙特雷（瓜达卢佩）',
 };
 
 function setTeamName(el, name) {
@@ -251,6 +281,7 @@ const translations = {
 let scheduleData;
 let currentLanguage = 'en';
 let dataSource = 'cached';
+let currentGroup = '';
 
 const languageSelect = document.getElementById('language-select');
 const groupStageContainer = document.getElementById('group-stage');
@@ -274,6 +305,17 @@ function text(key) {
   return translations[currentLanguage][key] || translations.en[key] || '';
 }
 
+function groupName(letter) {
+  if (currentLanguage === 'zh') return letter + '组';
+  return `${text('groupLabel')} ${letter}`;
+}
+
+function getVenueName(venue) {
+  if (!venue) return '';
+  if (currentLanguage === 'zh') return VENUE_TRANSLATIONS[venue] || venue;
+  return venue;
+}
+
 function formatDate(isoLike) {
   if (!isoLike) return text('datePending');
   const date = new Date(isoLike);
@@ -289,7 +331,7 @@ function formatDate(isoLike) {
 function createMatchCard(match) {
   const card = matchTemplate.content.firstElementChild.cloneNode(true);
   card.querySelector('.match-date').textContent = formatDate(match.date);
-  card.querySelector('.match-venue').textContent = match.venue || '';
+  card.querySelector('.match-venue').textContent = getVenueName(match.venue);
   setTeamName(card.querySelector('.team-home'), match.homeTeam);
   setTeamName(card.querySelector('.team-away'), match.awayTeam);
   card.querySelector('.score-home').textContent = match.homeScore ?? text('scorePending');
@@ -298,23 +340,45 @@ function createMatchCard(match) {
 }
 
 function renderGroupStage() {
-  groupStageContainer.innerHTML = '';
-  scheduleData.groupStage.forEach((group) => {
-    const section = document.createElement('section');
-    section.className = 'group';
+  const groups = scheduleData.groupStage.map((g) => g.group);
+  if (!currentGroup || !groups.includes(currentGroup)) {
+    currentGroup = groups[0] || '';
+  }
 
-    const title = document.createElement('h3');
-    title.textContent = `${text('groupLabel')} ${group.group}`;
-
-    const matchesWrapper = document.createElement('div');
-    matchesWrapper.className = 'group-matches';
-    group.matches.forEach((match) => {
-      matchesWrapper.append(createMatchCard(match));
+  // Rebuild group nav
+  const navEl = document.getElementById('group-nav');
+  navEl.innerHTML = '';
+  [groups.slice(0, 6), groups.slice(6, 12)].forEach((row) => {
+    if (!row.length) return;
+    const rowEl = document.createElement('div');
+    rowEl.className = 'group-nav-row';
+    row.forEach((g) => {
+      const btn = document.createElement('button');
+      btn.className = 'group-nav-btn' + (g === currentGroup ? ' active' : '');
+      btn.textContent = groupName(g);
+      btn.addEventListener('click', () => { currentGroup = g; renderGroupStage(); });
+      rowEl.appendChild(btn);
     });
-
-    section.append(title, matchesWrapper);
-    groupStageContainer.append(section);
+    navEl.appendChild(rowEl);
   });
+
+  // Show only the selected group
+  groupStageContainer.innerHTML = '';
+  const group = scheduleData.groupStage.find((g) => g.group === currentGroup);
+  if (!group) return;
+
+  const section = document.createElement('section');
+  section.className = 'group';
+
+  const title = document.createElement('h3');
+  title.textContent = groupName(group.group);
+
+  const matchesWrapper = document.createElement('div');
+  matchesWrapper.className = 'group-matches';
+  group.matches.forEach((match) => matchesWrapper.append(createMatchCard(match)));
+
+  section.append(title, matchesWrapper);
+  groupStageContainer.append(section);
 }
 
 function renderKnockoutStage() {
@@ -343,8 +407,6 @@ function renderKnockoutStage() {
 function applyTranslations() {
   document.documentElement.lang = translations[currentLanguage].htmlLang;
   document.getElementById('page-title').textContent = text('pageTitle');
-  document.getElementById('page-subtitle').textContent = text('subtitle');
-  document.getElementById('language-label').textContent = text('languageLabel');
   document.getElementById('group-stage-title').textContent = text('groupStageTitle');
   document.getElementById('knockout-title').textContent = text('knockoutTitle');
   document.getElementById('drag-tip').textContent = text('dragTip');
@@ -421,8 +483,9 @@ function transformOpenFootballData(raw) {
 
   const groupMap = {};
   groupMatches.forEach((m) => {
-    if (!groupMap[m.group]) groupMap[m.group] = [];
-    groupMap[m.group].push(transformMatch(m));
+    const g = (m.group || '').replace(/^Group\s+/i, '').trim();
+    if (!groupMap[g]) groupMap[g] = [];
+    groupMap[g].push(transformMatch(m));
   });
   const groupStage = Object.keys(groupMap).sort().map((g) => ({ group: g, matches: groupMap[g] }));
 

@@ -12,27 +12,32 @@
   </head>
   <body>
     <header class="site-header">
-      <div>
-        <h1 id="page-title">2026 FIFA World Cup Schedule</h1>
-        <p id="page-subtitle">Group stage fixtures and knockout bracket</p>
-        <p id="data-status" class="data-status"></p>
+      <div class="header-main">
+        <img src="images/logo.svg" alt="" class="site-logo">
+        <div>
+          <h1 id="page-title">2026 FIFA World Cup Schedule</h1>
+          <p id="data-status" class="data-status"></p>
+        </div>
       </div>
-      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme"></button>
-      <label class="language-picker" for="language-select">
-        <span id="language-label">Language</span>
-        <select id="language-select" aria-label="Language selector">
-          <option value="en">English</option>
-          <option value="zh">中文</option>
-          <option value="fr">Français</option>
-          <option value="de">Deutsch</option>
-          <option value="es">Español</option>
-        </select>
-      </label>
+      <div class="header-controls">
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme"></button>
+        <div class="lang-picker">
+          <span class="lang-globe" aria-hidden="true">🌐</span>
+          <select id="language-select" aria-label="Language selector">
+            <option value="en">English</option>
+            <option value="zh">中文</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="es">Español</option>
+          </select>
+        </div>
+      </div>
     </header>
 
     <main>
       <section class="panel">
         <h2 id="group-stage-title">Group Stage</h2>
+        <div id="group-nav" class="group-nav"></div>
         <div id="group-stage" class="group-list" aria-live="polite"></div>
       </section>
 
